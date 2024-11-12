@@ -1,3 +1,4 @@
+name: Run sanity test
 on:
   workflow_dispatch:
     inputs:
@@ -10,23 +11,25 @@ on:
           - info
           - warning
           - debug
-      print_tags:
-        description: 'True to print to STDOUT'
-        required: true
-        type: boolean
-      tags:
-        description: 'Test scenario tags'
+      testBed:
+        description: 'The test bed'
         required: true
         type: string
-      environment:
-        description: 'Environment to run tests against'
-        type: environment
-        required: true
+        default: 'A05-1'
+
 
 jobs:
   print-tag:
     runs-on: ubuntu-latest
-    if:  ${{ inputs.print_tags }} 
     steps:
-      - name: Print the input tag to STDOUT
-        run: echo  The tags are ${{ inputs.tags }} 
+      - name: Set up env
+        run: |
+          echo  setup ${{ inputs.testBed }}
+      - name: Run test
+        run: |
+          echo  run test on ${{ inputs.testBed }}
+          echo ${{ inputs.testBed }} > test.txt
+      - name: update result
+        run: |
+          echo update result
+          cat test.txt
